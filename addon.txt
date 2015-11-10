@@ -1,0 +1,10 @@
+"AddonInfo"
+ {
+    "name"                "FamilySharing"
+    "version"             "1"
+    "up_date"             "10/11/2015"
+    "author_name"         "C0nw0nk"
+    "author_email"        ""
+    "author_url"          "https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing"
+    "info"                "Prevent players bypassing existing / current bans via the Steam family sharing feature."
+}
