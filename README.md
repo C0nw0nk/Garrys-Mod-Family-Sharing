@@ -22,6 +22,10 @@ Block all family sharing kick reason configurable.
 
 Install the script to the "garrysmod/addons" folder.
 
+Configure the script and put your Steam Dev API Key :
+
+https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/lua/familysharing.lua#L14
+
 # Requirements :
 
 ULX / ULIB :
