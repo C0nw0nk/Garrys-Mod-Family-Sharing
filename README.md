@@ -35,7 +35,9 @@ The path to should look like this : "/garrysmod/lua/autorun/server/familysharing
 Configure the script and put your Steam Dev API Key : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/server/familysharing.lua#L14
 
 Inside your server.cfg file make sure you have the following : (This makes sure if you enable the IP banning feature it will actualy use the ip ban list.)
+
 `exec banned_user.cfg`
+
 `exec banned_ip.cfg`
 
 # Requirements :
