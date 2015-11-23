@@ -4,7 +4,7 @@ Prevent players bypassing existing bans on Garrys Mod Servers.
 
 This script will prevent players bypassing current / existing bans using Steam's built in family sharing feature.
 
-This will also "if enabled." add banning users by IP address to the default ULX !ban "ulx ban" and !banid "ulx banid" command.
+This will also "if enabled." add banning users by IP address to the default ULX `!ban` `"ulx ban"` and `!banid` `"ulx banid"` command.
 
 # Features :
 
@@ -34,7 +34,7 @@ The path to should look like this : `"/garrysmod/lua/autorun/server/familysharin
 
 Configure the script and put your Steam Dev API Key : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/server/familysharing.lua#L14
 
-Inside your server.cfg file make sure you have the following : (This makes sure if you enable the IP banning feature it will actualy use the ip ban list.)
+Inside your `server.cfg` file make sure you have the following : (This makes sure if you enable the IP banning feature it will actualy use the ip ban list.)
 
 `exec banned_user.cfg`
 
