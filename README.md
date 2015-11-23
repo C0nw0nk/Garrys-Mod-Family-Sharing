@@ -18,6 +18,12 @@ Block all family sharing accounts configurable. (Default : FALSE)
 
 Block all family sharing kick reason configurable.
 
+Extra Ban Checks on accounts that connect to the server, If their IP is not banned but they are their IP will be banned too. This feature will only work if the Banning users by IP address feature is also enabled. (Default : TRUE)
+
+Informative Ban Message makes the default ULX ban message pretty and useful to the player reading it. (Default : TRUE)
+
+Custom ban message configurable.
+
 # How to install
 
 Install the script to the "garrysmod/addons" folder.
