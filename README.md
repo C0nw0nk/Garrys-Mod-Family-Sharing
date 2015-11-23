@@ -12,7 +12,7 @@ Ban length is configurable. (Default : 0 Permament).
 
 Ban reason is configurable.
 
-Ban users by IP address too. (Default : FALSE)
+Ban users by IP address too. (Default : TRUE)
 
 Block all family sharing accounts configurable. (Default : FALSE)
 
