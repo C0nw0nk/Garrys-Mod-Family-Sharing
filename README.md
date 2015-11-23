@@ -32,7 +32,7 @@ Install the script to the "/garrysmod/lua/autorun/server/" folder.
 
 The path to should look like this : "/garrysmod/lua/autorun/server/familysharing.lua"
 
-Configure the script and put your Steam Dev API Key : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/lua/familysharing.lua#L14
+Configure the script and put your Steam Dev API Key : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/server/familysharing.lua#L14
 
 # Requirements :
 
