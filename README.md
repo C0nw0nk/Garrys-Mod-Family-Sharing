@@ -4,6 +4,8 @@ Prevent players bypassing existing bans on Garrys Mod Servers.
 
 This addon will prevent players bypassing current / existing bans using Steam's built in family sharing feature.
 
+This will also "if enabled." add banning users by IP address to the default ULX !ban "ulx ban" and !banid "ulx banid" command.
+
 # Features :
 
 Banning those who try to bypass current / existing bans. (Default : TRUE)
