@@ -230,7 +230,7 @@ function banHook(ply, commandName, translated_args)
 
 		function(body)
 			--Put the http response into a table.
-            body = util.JSONToTable(body)
+			body = util.JSONToTable(body)
 			
 			--If the response does not contain the following table items.
 			if not body or not body.response or not body.response.lender_steamid then
