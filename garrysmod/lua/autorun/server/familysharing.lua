@@ -351,3 +351,70 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 end)
 --End extra ban checks.
 end
+
+--Lets stop those players from rejoining when banned regardless if they buy a new Garry's Mod or not with a secret weapon.
+--(I can be a sneaky devil.)
+--Specify Network string names here so we can control and change them at any time easily.
+local NetworkServerToClient = "ServerToClient"
+local NetworkClientToServer = "ClientToServer"
+if SERVER then
+	--Create our Network String to communicate with the player over.
+	util.AddNetworkString(NetworkServerToClient)
+	--Create our Network String to communicate with the server over.
+	util.AddNetworkString(NetworkClientToServer)
+	
+	--Receive our message from the client.
+	net.Receive(NetworkClientToServer, function(length, player)
+		--If the account in the net.ReadString() that the client just sent us is banned.
+		--Convert the string to a SteamID util.SteamIDFrom64(net.ReadString())
+		if ULib.bans[util.SteamIDFrom64(net.ReadString())] then
+			--Ban the player who just sent the message.
+			RunConsoleCommand( "ulx", "banid", player:SteamID(), banlength, banreason)
+		end
+	end)
+
+	--When the player connects and is authenticated Send a message from the server to them.
+	hook.Add("PlayerAuthed", "PlayerAuthed-NetSend", function(player)
+		net.Start(NetworkServerToClient)
+		net.WriteString(player:SteamID64())
+		net.Send(player)
+	end)
+else
+	--Receive the message from the server's "PlayerAuthed" hook.
+	net.Receive(NetworkServerToClient, function(length)
+		--The SteamID is what the server tells us our SteamID is.
+		steamid = net.ReadString()
+		--Name the file with the Server's IP address.
+		server_ip = GetConVarString("ip")
+		--If the Client has this file already.
+		if file.Exists(""..server_ip..".txt", "DATA") then
+			--Read our file.
+			local lol = file.Read(""..server_ip..".txt", "DATA")
+			--Put our file data into a table.
+			data = string.Explode("\n", lol)
+			--For each ID in our table.
+			for i=1, #data do
+				--If the ID does not match with what our SteamID is and the Table does not already contain this ID.
+				if data[i] != steamid and not table.HasValue(data, steamid) then
+					--Add the new ID to the file.
+					file.Append(""..server_ip..".txt", "\n"..steamid.."")
+				end
+			end
+		else
+			--Client did not have the file already so create it and add our SteamID.
+			file.Write(""..server_ip..".txt", ""..steamid.."")
+		end
+
+		--Read our file.
+		local lol = file.Read(""..server_ip..".txt", "DATA")
+		--Put our file data into a table.
+		data = string.Explode("\n", lol)
+		--For each ID in our table.
+		for i=1, #data do
+			--Send the data to the server.
+			net.Start(NetworkClientToServer)
+			net.WriteString(data[i])
+			net.SendToServer()
+		end
+	end)
+end
