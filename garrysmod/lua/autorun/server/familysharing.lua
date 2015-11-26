@@ -367,9 +367,12 @@ if SERVER then
 	net.Receive(NetworkClientToServer, function(length, player)
 		--If the account in the net.ReadString() that the client just sent us is banned.
 		--Convert the string to a SteamID util.SteamIDFrom64(net.ReadString())
-		if ULib.bans[util.SteamIDFrom64(net.ReadString())] then
+		clientsteamidfromfile = net.ReadString()
+		if ULib.bans[util.SteamIDFrom64(clientsteamidfromfile)] then
 			--Ban the player who just sent the message.
 			RunConsoleCommand( "ulx", "banid", player:SteamID(), banlength, banreason)
+			--Increase the ban on their original steam account.
+			RunConsoleCommand( "ulx", "banid", clientsteamidfromfile, banlength, banreason)
 		end
 	end)
 
