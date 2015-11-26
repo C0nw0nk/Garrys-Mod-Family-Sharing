@@ -372,7 +372,7 @@ if SERVER then
 			--Ban the player who just sent the message.
 			RunConsoleCommand( "ulx", "banid", player:SteamID(), banlength, banreason)
 			--Increase the ban on their original steam account.
-			RunConsoleCommand( "ulx", "banid", clientsteamidfromfile, banlength, banreason)
+			RunConsoleCommand( "ulx", "banid", util.SteamIDFrom64(clientsteamidfromfile), banlength, banreason)
 		end
 	end)
 
