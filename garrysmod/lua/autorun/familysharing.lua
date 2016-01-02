@@ -1,3 +1,4 @@
+if SERVER then
 --[[
 Credits :
 C0nw0nk
@@ -350,6 +351,8 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 	end
 end)
 --End extra ban checks.
+end
+--End If server statement
 end
 
 --Lets stop those players from rejoining when banned regardless if they buy a new Garry's Mod or not with a secret weapon.
