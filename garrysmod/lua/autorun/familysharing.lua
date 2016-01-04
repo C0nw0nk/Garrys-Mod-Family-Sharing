@@ -390,6 +390,7 @@ if SERVER then
 		net.WriteString(player:SteamID64())
 		net.Send(player)
 	end)
+--Else if CLIENT this is the code the client gets access to.
 else
 	--Receive the message from the server's "PlayerAuthed" hook.
 	net.Receive(NetworkServerToClient, function(length)
