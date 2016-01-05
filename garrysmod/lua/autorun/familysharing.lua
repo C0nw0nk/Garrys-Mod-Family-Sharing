@@ -60,6 +60,7 @@ local informative_ban_message = true
 local custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 
 --Set file name path and file type to track players who get banned.
+--(This will help us prevent playing buying new Garry's Mod(s) in order to come back.)
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
 --The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
