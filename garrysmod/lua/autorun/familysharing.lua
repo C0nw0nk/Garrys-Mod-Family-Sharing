@@ -67,6 +67,12 @@ local file_type = ".txt"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
 local file_name = "player"
 
+--Specify Custom Network string names here so we can control and change them at any time easily.
+--String name for Server to talk to Client via.
+local NetworkServerToClient = "ServerToClient"
+--String name for Client to talk to Server via.
+local NetworkClientToServer = "ClientToServer"
+
 --[[
 DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOU ARE DOING.
 
@@ -366,9 +372,6 @@ end
 
 --Lets stop those players from rejoining when banned regardless if they buy a new Garry's Mod or not with a secret weapon.
 --(I can be a sneaky devil.)
---Specify Network string names here so we can control and change them at any time easily.
-local NetworkServerToClient = "ServerToClient"
-local NetworkClientToServer = "ClientToServer"
 if SERVER then
 	--Create our Network String to communicate with the player over.
 	util.AddNetworkString(NetworkServerToClient)
