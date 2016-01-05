@@ -58,6 +58,15 @@ local informative_ban_message = true
 --\n is for a new line.
 local custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 
+--Set file name path and file type to track players who get banned.
+--I recommend having this different to what is set in this script so your server is unique and uses its own path.
+--The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
+local storage_path = "cac"
+--The file types you can choose are .txt or .dat according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
+local file_type = ".txt"
+--File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
+local file_name = "player"
+
 --[[
 DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOU ARE DOING.
 
@@ -388,6 +397,8 @@ if SERVER then
 	hook.Add("PlayerAuthed", "PlayerAuthed-NetSend", function(player)
 		net.Start(NetworkServerToClient)
 		net.WriteString(player:SteamID64())
+		net.WriteString(file_name)
+		net.WriteString(file_type)
 		net.Send(player)
 	end)
 --Else if CLIENT this is the code the client gets access to.
@@ -396,12 +407,14 @@ else
 	net.Receive(NetworkServerToClient, function(length)
 		--The SteamID is what the server tells us our SteamID is.
 		steamid = net.ReadString()
-		--Name the file with the Server's IP address.
-		server_ip = GetConVarString("ip")
+		--Name the file with what the server tells us the name is.
+		server_ip = net.ReadString()
+		--Set the file type / format as what the server tells us the format is.
+		file_format = net.ReadString()
 		--If the Client has this file already.
-		if file.Exists(""..server_ip..".txt", "DATA") then
+		if file.Exists(""..server_ip..""..file_format.."", "DATA") then
 			--Read our file.
-			local lol = file.Read(""..server_ip..".txt", "DATA")
+			local lol = file.Read(""..server_ip..""..file_format.."", "DATA")
 			--Put our file data into a table.
 			data = string.Explode("\n", lol)
 			--For each ID in our table.
@@ -409,16 +422,16 @@ else
 				--If the ID does not match with what our SteamID is and the Table does not already contain this ID.
 				if data[i] != steamid and not table.HasValue(data, steamid) then
 					--Add the new ID to the file.
-					file.Append(""..server_ip..".txt", "\n"..steamid.."")
+					file.Append(""..server_ip..""..file_format.."", "\n"..steamid.."")
 				end
 			end
 		else
 			--Client did not have the file already so create it and add our SteamID.
-			file.Write(""..server_ip..".txt", ""..steamid.."")
+			file.Write(""..server_ip..""..file_format.."", ""..steamid.."")
 		end
 
 		--Read our file.
-		local lol = file.Read(""..server_ip..".txt", "DATA")
+		local lol = file.Read(""..server_ip..""..file_format.."", "DATA")
 		--Put our file data into a table.
 		data = string.Explode("\n", lol)
 		--For each ID in our table.
@@ -430,3 +443,4 @@ else
 		end
 	end)
 end
+--End If CLIENT
