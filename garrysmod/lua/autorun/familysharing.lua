@@ -1,3 +1,4 @@
+--If SERVER statement to ensure the following code stays server side.
 if SERVER then
 --[[
 Credits :
@@ -399,10 +400,15 @@ if SERVER then
 
 	--When the player connects and is authenticated Send a message from the server to them.
 	hook.Add("PlayerAuthed", "PlayerAuthed-NetSend", function(player)
+		--Begin communications with CLIENT.
 		net.Start(NetworkServerToClient)
+		--Send SteamID.
 		net.WriteString(player:SteamID64())
+		--Send file_name.
 		net.WriteString(file_name)
+		--Send file_type.
 		net.WriteString(file_type)
+		--Send to player that we just authenticated.
 		net.Send(player)
 	end)
 --Else if CLIENT this is the code the client gets access to.
