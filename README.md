@@ -28,6 +28,10 @@ Informative Ban Message makes the default ULX ban message pretty and useful to t
 
 Custom ban message configurable.
 
+Ban tracker to prevent players buying a new GMod Garry's Mod in order to connect. (Default : TRUE)
+
+Ban tracker paths settings and options all configurable.
+
 # How to install
 
 Install the script to the `"/garrysmod/lua/autorun/"` folder.
