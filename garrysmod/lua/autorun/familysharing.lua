@@ -59,6 +59,11 @@ local informative_ban_message = true
 --\n is for a new line.
 local custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 
+--Enable or Disable the ban tracker, This is how we track and prevent players who get banned buying a new GMod in order to connect.
+--Set true to enable | false to disable.
+local ban_tracker = true
+
+--Configuration for the ban tracker.
 --Set file name path and file type to track players who get banned.
 --(This will help us prevent banned players buying new Garry's Mod(s) in order to come back.)
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
@@ -373,6 +378,9 @@ end
 --End If server statement
 end
 
+--Ban tracker.
+--If ban tracker config is enabled then run the following code.
+if ban_tracker == true then
 --Lets stop those players from rejoining when banned regardless if they buy a new Garry's Mod or not with a secret weapon.
 --(I can be a sneaky devil.)
 if SERVER then
@@ -455,3 +463,5 @@ else
 	end)
 end
 --End If CLIENT
+end
+--End if ban_tracker enabled.
