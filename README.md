@@ -6,6 +6,8 @@ This script will prevent players bypassing current / existing bans using Steam's
 
 This will also "if enabled." add banning users by IP address to the default ULX `!ban` `"ulx ban"` and `!banid` `"ulx banid"` command.
 
+If you have any bugs issues or problems just post a Issue request. https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/issues
+
 # Features :
 
 Banning those who try to bypass current / existing bans. (Default : TRUE)
