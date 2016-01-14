@@ -4,6 +4,8 @@ if SERVER then
 Credits :
 C0nw0nk
 
+Github : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing
+
 Info :
 This script will make it very hard for users who you ban from your server to return or bypass their current/existing bans.
 When you ban a user it will also ban the account that owns Garry's Mod / has family shared them the game.
