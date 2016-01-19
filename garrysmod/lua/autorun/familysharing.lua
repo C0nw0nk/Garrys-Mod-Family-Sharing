@@ -111,27 +111,16 @@ local function HandleSharedPlayer(ply, lenderSteamID)
 
 	--If the lenderSteamID is in the ULX ban list then kick/ban the SteamID they are sharing Garry's Mod with.
 	if ULib.bans[lenderSteamID] then
-		--Kick the player.
-		ply:Kick(kickmessage)
 		--If banbypass is enabled.
 		if banbypass == true then
 			--Ban the shared account that has connected.
 			RunConsoleCommand( "ulx", "banid", ply:SteamID(), banlength, banreason)
 			--Ban the lenderSteamID (The account that owns Garry's mod what is originally banned) or increase their ban.
 			RunConsoleCommand( "ulx", "banid", lenderSteamID, banlength, banreason)
-			
-			--If banip is enabled.
-			if banip == true then
-				--Ban the players IP who is trying to bypass a existing ban.
-				RunConsoleCommand( "addip", banlength, string.sub( tostring( ply:IPAddress() ), 1, string.len( tostring( ply:IPAddress() ) ) - 6 ))
-				RunConsoleCommand( "writeip" )
-				--exec banned_ip file to make the ban take effect.
-				--RunConsoleCommand("exec banned_ip.cfg")
-				--Use ULX to exec the banned ip file.
-				if ULib.fileExists( "cfg/banned_ip.cfg" ) then
-					ULib.execFile( "cfg/banned_ip.cfg" )
-				end
-			end
+		--else ban bypass is disabled so kick the person bypassing a ban instead.
+		else
+			--Kick the player.
+			ply:Kick(kickmessage)
 		end
 		
 	end
