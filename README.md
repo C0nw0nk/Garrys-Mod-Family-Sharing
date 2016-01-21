@@ -46,7 +46,7 @@ Inside your `server.cfg` file make sure you have the following : (This makes sur
 
 `exec banned_ip.cfg`
 
-# Requirements :
+# Dependencies / Requirements :
 
 ULX / ULIB :
 
