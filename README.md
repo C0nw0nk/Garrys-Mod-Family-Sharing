@@ -46,6 +46,10 @@ Inside your `server.cfg` file make sure you have the following : (This makes sur
 
 `exec banned_ip.cfg`
 
+# Usage :
+
+In order to ban users family sharing the script will do it all automaticly so you don't have to worry about a thing all you have to do is use either the `!ban` or `!banid` command in chat or you can use the ULX menu `!menu` or `ulx ban` / `ulx banid` via the console. The script does all the rest.
+
 # Dependencies / Requirements :
 
 ULX / ULIB :
