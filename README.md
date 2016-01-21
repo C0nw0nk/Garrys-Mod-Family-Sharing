@@ -4,7 +4,7 @@ Prevent players bypassing existing bans on Garrys Mod Servers.
 
 This script will prevent players bypassing current / existing bans using Steam's built in family sharing feature.
 
-This script will also prevent players bypassing current / existing bans by buying a new Garry's Mod. (Yes it can detect that too.)
+This script will also prevent players bypassing current / existing bans by buying a new Garry's Mod. (Yes it can detect that too.) via the ban tracker feature.
 
 This will also "if enabled." add banning users by IP address to the default ULX `!ban` `"ulx ban"` and `!banid` `"ulx banid"` command.
 
