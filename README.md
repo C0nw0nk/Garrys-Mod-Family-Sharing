@@ -61,3 +61,13 @@ http://ulyssesmod.net/downloads.php
 Steam Dev API Key can be obtained from :
 
 http://steamcommunity.com/dev/apikey
+
+# F.A.Q (Frequently asked Questions) :
+
+##### Will i add MySQL / Database support ?
+
+I do not need to. That is something to be added to the ULX Admin mod not this script.
+
+##### Will this work with Source Bans / Multiple Servers ?
+
+Yes, If you have source bans setup just put this script on each server you run and all will work fine.
