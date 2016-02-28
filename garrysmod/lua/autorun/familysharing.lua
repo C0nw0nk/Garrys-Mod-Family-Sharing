@@ -385,7 +385,8 @@ if SERVER then
 		--If the account in the net.ReadString() that the client just sent us is banned.
 		--Convert the string to a SteamID util.SteamIDFrom64(net.ReadString())
 		clientsteamidfromfile = net.ReadString()
-		if ULib.bans[util.SteamIDFrom64(clientsteamidfromfile)] then
+		--Ignore admins and check if the steamid is in the banlist.
+		if !player:IsAdmin() and ULib.bans[util.SteamIDFrom64(clientsteamidfromfile)] then
 			--Log to server console who has been detected attempting to bypass a existing ban.
 			print(string.format("The following SteamID: %s | matched with a SteamID in the ban list we are now going to ban their new account too (Stop trying to bypass bans): %s",
 			util.SteamIDFrom64(clientsteamidfromfile),
