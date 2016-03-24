@@ -99,13 +99,13 @@ local function HandleSharedPlayer(ply, lenderSteamID)
 			ply:SteamID(),
 			lenderSteamID
 	))
-	
+
 	--Prevent anyone joining on a family shared account regardless if they are banned or not.
 	if blockfamilysharing == true then
 		ply:Kick(blockfamilysharingmessage)
 	end
 	--End preventing anyone joining on a family shared account regardless if they are banned or not.
-	
+
 	--Check if ULX is installed.
 	if not (ULib and ULib.bans) then return end
 
@@ -122,7 +122,6 @@ local function HandleSharedPlayer(ply, lenderSteamID)
 			--Kick the player.
 			ply:Kick(kickmessage)
 		end
-		
 	end
 end
 
@@ -260,7 +259,7 @@ function banHook(ply, commandName, translated_args)
 		function(body)
 			--Put the http response into a table.
 			body = util.JSONToTable(body)
-			
+
 			--If the response does not contain the following table items.
 			if not body or not body.response or not body.response.lender_steamid then
 				error(string.format("FamilySharing: Invalid Steam API response for %s | %s\n", util.SteamIDTo64(target), target))
@@ -280,7 +279,7 @@ function banHook(ply, commandName, translated_args)
 			error(string.format("FamilySharing: Failed API call for %s | %s (Error: %s)\n", util.SteamIDTo64(target), target, code))
 		end
 		)
-		
+
 	end
 end
 hook.Add("ULibPostTranslatedCommand", "BanHook", banHook)
@@ -297,7 +296,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 		util.SteamIDFrom64(steamID64),
 		ipAddress:Split(":")[1]
 		))
-		
+
 		--If ban time remaining is less than or equal to 0 then.
 		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) == 0 then
 			--Make the ban length 0 for permanent.
@@ -306,7 +305,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			--If the ban time remaining is not 0 then make it the time remaining on the users ban.
 			banip_length = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
 		end
-		
+
 		--Ban their IP address if it is not already banned.
 		RunConsoleCommand( "addip", banip_length, ipAddress:Split(":")[1])
 		RunConsoleCommand( "writeip" )
@@ -316,7 +315,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 		if ULib.fileExists( "cfg/banned_ip.cfg" ) then
 			ULib.execFile( "cfg/banned_ip.cfg" )
 		end
-		
+
 		--Show custom you are banned message.
 		--Put the date of our ban into a readable format.
 		date_of_ban = os.date( "%b %d, %Y - %I:%M:%S %p", tonumber( ULib.bans[util.SteamIDFrom64(steamID64)].time ) )
@@ -339,7 +338,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			return false, "You have been banned from this server."
 		end
 	end
-	
+
 	--Check if their IP address is in the ban list.
 	if ULib.fileExists( "cfg/banned_ip.cfg" ) then
 		--Read the banned ip file.
@@ -379,7 +378,7 @@ if SERVER then
 	util.AddNetworkString(NetworkServerToClient)
 	--Create our Network String to communicate with the server over.
 	util.AddNetworkString(NetworkClientToServer)
-	
+
 	--Receive our message from the client.
 	net.Receive(NetworkClientToServer, function(length, player)
 		--If the account in the net.ReadString() that the client just sent us is banned.
@@ -428,13 +427,10 @@ else
 			local lol = file.Read(""..server_ip..""..file_format.."", "DATA")
 			--Put our file data into a table.
 			data = string.Explode("\n", lol)
-			--For each ID in our table.
-			for i=1, #data do
-				--If the ID does not match with what our SteamID is and the Table does not already contain this ID.
-				if data[i] != steamid and not table.HasValue(data, steamid) then
-					--Add the new ID to the file.
-					file.Append(""..server_ip..""..file_format.."", "\n"..steamid.."")
-				end
+			--If the Table does not already contain this ID.
+			if !table.HasValue(data, steamid) then
+				--Add the new ID to the file.
+				file.Append(""..server_ip..""..file_format.."", "\n"..steamid.."")
 			end
 		else
 			--Client did not have the file already so create it and add our SteamID.
