@@ -2,6 +2,8 @@
 
 Prevent players bypassing existing bans on Garrys Mod Servers.
 
+The way this script works is it lets family sharing users join and play (Unless you enable the block all family shared accounts feature.) When you ban a player from your server it will check if the account is shared if it is it will ban both the owners steam account and the shared account they are currently connected via thus preventing any more alts joining.
+
 This script will prevent players bypassing current / existing bans using Steam's built in family sharing feature.
 
 This script will also prevent players bypassing current / existing bans by buying a new Garry's Mod. (Yes it can detect that too.) via the ban tracker feature.
