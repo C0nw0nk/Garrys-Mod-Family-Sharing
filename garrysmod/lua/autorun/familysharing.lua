@@ -72,7 +72,7 @@ local ban_tracker = true
 --The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
 local storage_path = "cac"
---The file types you can choose are .txt or .dat according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
+--The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
 local file_type = ".txt"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
 local file_name = "player"
