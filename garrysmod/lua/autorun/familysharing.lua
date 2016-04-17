@@ -15,55 +15,55 @@ Depending on the settings you assign you may also ban users by IP too what will 
 
 --APIKey required to deal with those family sharing.
 --You may obtain your Steam API Key from here | http://steamcommunity.com/dev/apikey
-local APIKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+APIKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 --The message displayed to those who connect by a family shared account that has been banned.
-local kickmessage = "The account that lent you Garry's Mod is banned on this server"
+kickmessage = "The account that lent you Garry's Mod is banned on this server"
 
 --Ban those who try to bypass a current ban by returning on a family shared account.
 --Set true to enable | false to disable.
 --If this is set to false it will only kick those bypassing bans.
-local banbypass = true
+banbypass = true
 
 --The length to ban those who are trying to bypass a current / existing ban.
 --This will also increase/change the ban length on the account that owns Garry's Mod. (They shouldn't attempt to bypass a current ban.)
 --time is in minutes.
 --0 is permanent.
-local banlength = 0
+banlength = 0
 
 --The reason the player has been banned automaticly for connecting from a family shared account that already has a ban.
-local banreason = "attempting to bypass a current/existing ban."
+banreason = "attempting to bypass a current/existing ban."
 
 --Enable banning users by IP address too.
 --Makes it even harder for continuous offenders to return to the server.
 --Set true to enable | false to disable.
-local banip = true
+banip = true
 
 --Enable blocking anyone joining on a family shared account regardless if they are banned or not.
 --Enabling this will allow only accounts that have bought and own Garry's Mod to join.
 --Set true to enable | false to disable.
-local blockfamilysharing = false
+blockfamilysharing = false
 
 --The message to display to those who have been blocked by "blockfamilysharing".
-local blockfamilysharingmessage = "Please connect to the server by a account that own's Garry's Mod."
+blockfamilysharingmessage = "Please connect to the server by a account that own's Garry's Mod."
 
 --Extra Ban Checks will ban users IP addresses who connect to the server if their SteamID is in the ban list
 --and their IP is not already banned.
 --This feature will only work if the "banip" feature is also set to "true".
 --Set true to enable | false to disable.
-local extra_ban_checks = true
+extra_ban_checks = true
 
 --Makes the default ULX banned message more informative and pretty.
 --Set true to enable | false to disable.
-local informative_ban_message = true
+informative_ban_message = true
 
 --The custom banned message to display to those who are banned.
 --\n is for a new line.
-local custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
+custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 
 --Enable or Disable the ban tracker, This is how we track and prevent players who get banned buying a new GMod in order to connect.
 --Set true to enable | false to disable.
-local ban_tracker = true
+ban_tracker = true
 
 --Configuration for the ban tracker.
 --Set file name path and file type to track players who get banned.
@@ -71,18 +71,29 @@ local ban_tracker = true
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
 --The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
-local storage_path = "cac/" --Always keep a forward slash if you set a directory or folder.
+storage_path = "cac/" --Always keep a forward slash if you set a directory or folder.
 --The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
-local file_type = ".txt"
+file_type = ".txt"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
-local file_name = "player"
+file_name = "player"
+
+--End if server statement.
+end
+
+--[[This is a shared setting that both client and server need to read.
+Because of that this setting is in the shared location not in client code tags and not in server code tags.
+Both client and server may now read and use this.
+]]
 
 --Specify Custom Network string names here so we can control and change them at any time easily.
 --String name for Server to talk to Client via.
-local NetworkServerToClient = "ServerToClient"
+NetworkServerToClient = "ServerToClient"
 --String name for Client to talk to Server via.
-local NetworkClientToServer = "ClientToServer"
+NetworkClientToServer = "ClientToServer"
 
+--[[End shared setting]]
+
+if SERVER then --If SERVER statement to ensure the following code stays server side.
 --[[
 DO NOT TOUCH ANYTHING BELOW THIS POINT UNLESS YOU KNOW WHAT YOU ARE DOING.
 
