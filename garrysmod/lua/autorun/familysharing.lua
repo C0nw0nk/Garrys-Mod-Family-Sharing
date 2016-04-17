@@ -71,7 +71,7 @@ local ban_tracker = true
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
 --The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
-local storage_path = "cac"
+local storage_path = "cac/" --Always keep a forward slash if you set a directory or folder.
 --The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
 local file_type = ".txt"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
@@ -95,9 +95,9 @@ THIS BLOCK IS ENTIRELY WRITTEN IN CAPS LOCK TO SHOW YOU HOW SERIOUS I AM.
 local function HandleSharedPlayer(ply, lenderSteamID)
 	--Log to server console who has been detected family sharing.
 	print(string.format("FamilySharing: %s | %s has been lent Garry's Mod by %s",
-			ply:Nick(),
-			ply:SteamID(),
-			lenderSteamID
+		ply:Nick(),
+		ply:SteamID(),
+		lenderSteamID
 	))
 
 	--Prevent anyone joining on a family shared account regardless if they are banned or not.
@@ -130,32 +130,32 @@ end
 local function CheckFamilySharing(ply)
 	--Send request to the SteamDEV API with the SteamID64 of the player who has just connected.
 	http.Fetch(
-		string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
-			APIKey,
-			ply:SteamID64()
-		),
+	string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
+		APIKey,
+		ply:SteamID64()
+	),
 
-		function(body)
-			--Put the http response into a table.
-			body = util.JSONToTable(body)
+	function(body)
+		--Put the http response into a table.
+		body = util.JSONToTable(body)
 
-			--If the response does not contain the following table items.
-			if not body or not body.response or not body.response.lender_steamid then
-				error(string.format("FamilySharing: Invalid Steam API response for %s | %s\n", ply:Nick(), ply:SteamID()))
-			end
-
-			--Set the lender to be the lender in our body response table.
-			local lender = body.response.lender_steamid
-			--If the lender is not 0 (Would contain SteamID64). Lender will only ever == 0 if the account owns the game.
-			if lender ~= "0" then
-				--Handle the player that is on a family shared account to decide their fate.
-				HandleSharedPlayer(ply, util.SteamIDFrom64(lender))
-			end
-		end,
-
-		function(code)
-			error(string.format("FamilySharing: Failed API call for %s | %s (Error: %s)\n", ply:Nick(), ply:SteamID(), code))
+		--If the response does not contain the following table items.
+		if not body or not body.response or not body.response.lender_steamid then
+			error(string.format("FamilySharing: Invalid Steam API response for %s | %s\n", ply:Nick(), ply:SteamID()))
 		end
+
+		--Set the lender to be the lender in our body response table.
+		local lender = body.response.lender_steamid
+		--If the lender is not 0 (Would contain SteamID64). Lender will only ever == 0 if the account owns the game.
+		if lender ~= "0" then
+			--Handle the player that is on a family shared account to decide their fate.
+			HandleSharedPlayer(ply, util.SteamIDFrom64(lender))
+		end
+	end,
+
+	function(code)
+		error(string.format("FamilySharing: Failed API call for %s | %s (Error: %s)\n", ply:Nick(), ply:SteamID(), code))
+	end
 	)
 end
 hook.Add("PlayerAuthed", "CheckFamilySharing", CheckFamilySharing)
@@ -293,8 +293,8 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 	if ULib.bans[util.SteamIDFrom64(steamID64)] then
 		--Log to server console who has been detected attempting to bypass a existing ban.
 		print(string.format("The following players SteamID: %s | matched with a SteamID in the ban list we are now going to ban their new IP too (Stop trying to bypass bans): %s",
-		util.SteamIDFrom64(steamID64),
-		ipAddress:Split(":")[1]
+			util.SteamIDFrom64(steamID64),
+			ipAddress:Split(":")[1]
 		))
 
 		--If ban time remaining is less than or equal to 0 then.
@@ -351,9 +351,9 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			if data[i]:Split(" ")[3] == ipAddress:Split(":")[1] then
 				--Log to server console who has been detected attempting to bypass a existing ban.
 				print(string.format("The following players IP: %s | matched with %s in the IP ban list we are banning their new SteamID too (Stop trying to bypass bans): %s",
-				ipAddress:Split(":")[1],
-				data[i]:Split(" ")[3],
-				util.SteamIDFrom64(steamID64)
+					ipAddress:Split(":")[1],
+					data[i]:Split(" ")[3],
+					util.SteamIDFrom64(steamID64)
 				))
 				--Ban the SteamID of the account connecting too. length of ban depends on what the IP ban length is set to. (data[i]:Split(" ")[2])
 				RunConsoleCommand( "ulx", "banid", util.SteamIDFrom64(steamID64), data[i]:Split(" ")[2], banreason)
@@ -388,8 +388,8 @@ if SERVER then
 		if !player:IsAdmin() and ULib.bans[util.SteamIDFrom64(clientsteamidfromfile)] then
 			--Log to server console who has been detected attempting to bypass a existing ban.
 			print(string.format("The following SteamID: %s | matched with a SteamID in the ban list we are now going to ban their new account too (Stop trying to bypass bans): %s",
-			util.SteamIDFrom64(clientsteamidfromfile),
-			player:SteamID()
+				util.SteamIDFrom64(clientsteamidfromfile),
+				player:SteamID()
 			))
 			--Ban the player who just sent the message.
 			RunConsoleCommand( "ulx", "banid", player:SteamID(), banlength, banreason)
@@ -408,37 +408,46 @@ if SERVER then
 		net.WriteString(file_name)
 		--Send file_type.
 		net.WriteString(file_type)
+		--Send storage_path.
+		net.WriteString(storage_path)
 		--Send to player that we just authenticated.
 		net.Send(player)
 	end)
 --Else if CLIENT this is the code the client gets access to.
 else
 	--Receive the message from the server's "PlayerAuthed" hook.
-	net.Receive(NetworkServerToClient, function(length)
+	net.Receive(NetworkServerToClient, function()
 		--The SteamID is what the server tells us our SteamID is.
 		steamid = net.ReadString()
 		--Name the file with what the server tells us the name is.
 		server_ip = net.ReadString()
 		--Set the file type / format as what the server tells us the format is.
 		file_format = net.ReadString()
+		--Set directory/file path.
+		file_path = net.ReadString()
 		--If the Client has this file already.
-		if file.Exists(""..server_ip..""..file_format.."", "DATA") then
+		if file.Exists(""..file_path..""..server_ip..""..file_format.."", "DATA") then
 			--Read our file.
-			local lol = file.Read(""..server_ip..""..file_format.."", "DATA")
+			local lol = file.Read(""..file_path..""..server_ip..""..file_format.."", "DATA")
 			--Put our file data into a table.
 			data = string.Explode("\n", lol)
 			--If the Table does not already contain this ID.
 			if !table.HasValue(data, steamid) then
 				--Add the new ID to the file.
-				file.Append(""..server_ip..""..file_format.."", "\n"..steamid.."")
+				file.Append(""..file_path..""..server_ip..""..file_format.."", "\n"..steamid.."")
 			end
 		else
+			--If the file path has a directory.
+			if file_path != "" or file_path != nil then
+				--Create the folder(s) to store the file.
+				file.CreateDir(""..file_path.."")
+			end
 			--Client did not have the file already so create it and add our SteamID.
-			file.Write(""..server_ip..""..file_format.."", ""..steamid.."")
+			file.Write(""..file_path..""..server_ip..""..file_format.."", ""..steamid.."")
 		end
 
 		--Read our file.
-		local lol = file.Read(""..server_ip..""..file_format.."", "DATA")
+		local lol = file.Read(""..file_path..""..server_ip..""..file_format.."", "DATA")
 		--Put our file data into a table.
 		data = string.Explode("\n", lol)
 		--For each ID in our table.
