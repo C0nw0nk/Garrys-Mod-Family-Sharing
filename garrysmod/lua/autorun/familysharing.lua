@@ -64,7 +64,7 @@ custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 --Set file name path and file type to track players who get banned.
 --(This will help us prevent banned players buying new Garry's Mod(s) in order to come back.)
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
---The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
+--The folder we will create and put the file into to make it inconspicuous.
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
 storage_path = "models/" --Always keep a forward slash if you set a directory or folder.
 --The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
