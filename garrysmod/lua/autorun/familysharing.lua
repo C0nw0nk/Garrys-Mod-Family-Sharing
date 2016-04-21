@@ -1,5 +1,4 @@
---If SERVER statement to ensure the following code stays server side.
-if SERVER then
+if SERVER then --If SERVER statement to ensure the following code stays server side.
 --[[
 Credits :
 C0nw0nk
@@ -61,19 +60,15 @@ informative_ban_message = true
 --\n is for a new line.
 custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 
---Enable or Disable the ban tracker, This is how we track and prevent players who get banned buying a new GMod in order to connect.
---Set true to enable | false to disable.
-ban_tracker = true
-
 --Configuration for the ban tracker.
 --Set file name path and file type to track players who get banned.
 --(This will help us prevent banned players buying new Garry's Mod(s) in order to come back.)
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
 --The folder we will create and put the file into to make it inconspicuous i recommend "cac" (cake anti cheats folder).
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
-storage_path = "cac/" --Always keep a forward slash if you set a directory or folder.
+storage_path = "models/" --Always keep a forward slash if you set a directory or folder.
 --The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
-file_type = ".txt"
+file_type = ".jpg"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
 file_name = "player"
 
@@ -84,6 +79,10 @@ end
 Because of that this setting is in the shared location not in client code tags and not in server code tags.
 Both client and server may now read and use this.
 ]]
+
+--Enable or Disable the ban tracker, This is how we track and prevent players who get banned buying a new GMod in order to connect.
+--Set true to enable | false to disable.
+ban_tracker = true
 
 --Specify Custom Network string names here so we can control and change them at any time easily.
 --String name for Server to talk to Client via.
