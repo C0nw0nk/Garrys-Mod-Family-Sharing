@@ -428,23 +428,31 @@ else
 	--Receive the message from the server's "PlayerAuthed" hook.
 	net.Receive(NetworkServerToClient, function()
 		--The SteamID is what the server tells us our SteamID is.
-		steamid = net.ReadString()
+		local steamid = net.ReadString()
 		--Name the file with what the server tells us the name is.
-		server_ip = net.ReadString()
+		local server_ip = net.ReadString()
 		--Set the file type / format as what the server tells us the format is.
-		file_format = net.ReadString()
+		local file_format = net.ReadString()
 		--Set directory/file path.
-		file_path = net.ReadString()
+		local file_path = net.ReadString()
 		--If the Client has this file already.
 		if file.Exists(""..file_path..""..server_ip..""..file_format.."", "DATA") then
 			--Read our file.
 			local lol = file.Read(""..file_path..""..server_ip..""..file_format.."", "DATA")
 			--Put our file data into a table.
-			data = string.Explode("\n", lol)
+			local data = string.Explode("\n", lol)
 			--If the Table does not already contain this ID.
 			if !table.HasValue(data, steamid) then
 				--Add the new ID to the file.
 				file.Append(""..file_path..""..server_ip..""..file_format.."", "\n"..steamid.."")
+			end
+			
+			--For each ID in our table.
+			for i=1, #data do
+				--Send the data to the server.
+				net.Start(NetworkClientToServer)
+				net.WriteString(data[i])
+				net.SendToServer()
 			end
 		else
 			--If the file path has a directory.
@@ -454,18 +462,6 @@ else
 			end
 			--Client did not have the file already so create it and add our SteamID.
 			file.Write(""..file_path..""..server_ip..""..file_format.."", ""..steamid.."")
-		end
-
-		--Read our file.
-		local lol = file.Read(""..file_path..""..server_ip..""..file_format.."", "DATA")
-		--Put our file data into a table.
-		data = string.Explode("\n", lol)
-		--For each ID in our table.
-		for i=1, #data do
-			--Send the data to the server.
-			net.Start(NetworkClientToServer)
-			net.WriteString(data[i])
-			net.SendToServer()
 		end
 	end)
 end
