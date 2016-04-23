@@ -48,7 +48,6 @@ blockfamilysharingmessage = "Please connect to the server by a account that own'
 
 --Extra Ban Checks will ban users IP addresses who connect to the server if their SteamID is in the ban list
 --and their IP is not already banned.
---This feature will only work if the "banip" feature is also set to "true".
 --Set true to enable | false to disable.
 extra_ban_checks = true
 
@@ -281,8 +280,8 @@ end
 hook.Add("ULibPostTranslatedCommand", "BanHook", banHook)
 --End hooking ulx ban commands.
 
---If banip and extra ban checks are enabled.
-if banip == true and extra_ban_checks == true then
+--If informative_ban_message is enabled or extra ban checks are enabled.
+if informative_ban_message == true or extra_ban_checks == true then
 --Start IP banned or Steam ID banned check. (Extra checks to prevent players bypassing bans.)
 hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 	--Check if their SteamID is in the ban list.
@@ -293,6 +292,13 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			ipAddress:Split(":")[1]
 		))
 
+		--If banip is enabled and extra ban checks are enabled.
+		if banip == true and extra_ban_checks == true then
+			--Ban their IP address if it is not already banned.
+			RunConsoleCommand("addip", banip_length, ipAddress:Split(":")[1])
+			RunConsoleCommand("writeip")
+		end
+
 		--If ban time remaining is less than or equal to 0 then.
 		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) == 0 then
 			--Make the ban length 0 for permanent.
@@ -301,10 +307,6 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			--If the ban time remaining is not 0 then make it the time remaining on the users ban.
 			banip_length = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
 		end
-
-		--Ban their IP address if it is not already banned.
-		RunConsoleCommand("addip", banip_length, ipAddress:Split(":")[1])
-		RunConsoleCommand("writeip")
 
 		--Show custom you are banned message.
 		--Put the date of our ban into a readable format.
@@ -329,26 +331,29 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 		end
 	end
 
-	--Check if their IP address is in the ban list.
-	if file.Exists("cfg/banned_ip.cfg", "GAME") then
-		--Read the banned ip file.
-		local input = file.Read("cfg/banned_ip.cfg", "GAME")
-		--Put all banned ip's into a table separate each by a new line.
-		local data = string.Explode("\n", input)
-		--For each ip check if it matches with the ip connecting to the server.
-		for i=1, #data do
-			--If the ip in the banned_ip list matches with the ip connecting to the server then.
-			if data[i]:Split(" ")[3] == ipAddress:Split(":")[1] then
-				--Log to server console who has been detected attempting to bypass a existing ban.
-				print(string.format("The following players IP: %s | matched with %s in the IP ban list we are banning their new SteamID too (Stop trying to bypass bans): %s",
-					ipAddress:Split(":")[1],
-					data[i]:Split(" ")[3],
-					util.SteamIDFrom64(steamID64)
-				))
-				--Ban the SteamID of the account connecting too. length of ban depends on what the IP ban length is set to. (data[i]:Split(" ")[2])
-				RunConsoleCommand("ulx", "banid", util.SteamIDFrom64(steamID64), data[i]:Split(" ")[2], banreason)
-				--Show the default you are banned message.
-				return false, "You have been banned from this server."
+	--If extra ban checks are enabled.
+	if extra_ban_checks == true then
+		--Check if their IP address is in the ban list.
+		if file.Exists("cfg/banned_ip.cfg", "GAME") then
+			--Read the banned ip file.
+			local input = file.Read("cfg/banned_ip.cfg", "GAME")
+			--Put all banned ip's into a table separate each by a new line.
+			local data = string.Explode("\n", input)
+			--For each ip check if it matches with the ip connecting to the server.
+			for i=1, #data do
+				--If the ip in the banned_ip list matches with the ip connecting to the server then.
+				if data[i]:Split(" ")[3] == ipAddress:Split(":")[1] then
+					--Log to server console who has been detected attempting to bypass a existing ban.
+					print(string.format("The following players IP: %s | matched with %s in the IP ban list we are banning their new SteamID too (Stop trying to bypass bans): %s",
+						ipAddress:Split(":")[1],
+						data[i]:Split(" ")[3],
+						util.SteamIDFrom64(steamID64)
+					))
+					--Ban the SteamID of the account connecting too. length of ban depends on what the IP ban length is set to. (data[i]:Split(" ")[2])
+					RunConsoleCommand("ulx", "banid", util.SteamIDFrom64(steamID64), data[i]:Split(" ")[2], banreason)
+					--Show the default you are banned message.
+					return false, "You have been banned from this server."
+				end
 			end
 		end
 	end
