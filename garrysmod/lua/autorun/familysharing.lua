@@ -292,13 +292,6 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			ipAddress:Split(":")[1]
 		))
 
-		--If banip is enabled and extra ban checks are enabled.
-		if banip == true and extra_ban_checks == true then
-			--Ban their IP address if it is not already banned.
-			RunConsoleCommand("addip", banip_length, ipAddress:Split(":")[1])
-			RunConsoleCommand("writeip")
-		end
-
 		--If ban time remaining is less than or equal to 0 then.
 		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) == 0 then
 			--Make the ban length 0 for permanent.
@@ -306,6 +299,13 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 		else
 			--If the ban time remaining is not 0 then make it the time remaining on the users ban.
 			banip_length = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
+		end
+
+		--If banip is enabled and extra ban checks are enabled.
+		if banip == true and extra_ban_checks == true then
+			--Ban their IP address if it is not already banned.
+			RunConsoleCommand("addip", banip_length, ipAddress:Split(":")[1])
+			RunConsoleCommand("writeip")
 		end
 
 		--Show custom you are banned message.
