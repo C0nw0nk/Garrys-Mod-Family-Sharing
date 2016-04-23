@@ -293,7 +293,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 		))
 
 		--If ban time remaining is less than or equal to 0 then.
-		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) == 0 then
+		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) <= 0 then
 			--Make the ban length 0 for permanent.
 			banip_length = 0
 		else
