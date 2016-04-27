@@ -81,13 +81,13 @@ Both client and server may now read and use this.
 
 --Enable or Disable the ban tracker, This is how we track and prevent players who get banned buying a new GMod in order to connect.
 --Set true to enable | false to disable.
-ban_tracker = true
+local ban_tracker = true
 
 --Specify Custom Network string names here so we can control and change them at any time easily.
 --String name for Server to talk to Client via.
-NetworkServerToClient = "ServerToClient"
+local NetworkServerToClient = "ServerToClient"
 --String name for Client to talk to Server via.
-NetworkClientToServer = "ClientToServer"
+local NetworkClientToServer = "ClientToServer"
 
 --[[End shared setting]]
 
@@ -241,6 +241,9 @@ local function banHook(ply, commandName, translated_args)
 					--Ban the players IP who is trying to bypass a existing ban.
 					RunConsoleCommand("addip", time, plys[i]:IPAddress():Split(":")[1])
 					RunConsoleCommand("writeip")
+					
+					--break out of the for each. (pointless to go through the rest when we found what we want.)
+					break
 				end
 			end
 		end
@@ -310,11 +313,11 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 
 		--Show custom you are banned message.
 		--Put the date of our ban into a readable format.
-		date_of_ban = os.date("%b %d, %Y - %I:%M:%S %p", tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].time))
+		local date_of_ban = os.date("%b %d, %Y - %I:%M:%S %p", tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].time))
 		--Put the date of unbanning the player into a readable format.
-		date_of_unban = os.date("%b %d, %Y - %I:%M:%S %p", tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban))
+		local date_of_unban = os.date("%b %d, %Y - %I:%M:%S %p", tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban))
 		--Put the time remaining into a format that the player can read.
-		ban_time_left = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
+		local ban_time_left = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
 		--If ban time remaining is less than or equal to 0 then.
 		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) <= 0 then
 			--Set the displayed information for the player to read.
