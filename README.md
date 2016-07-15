@@ -63,6 +63,12 @@ Inside your `server.cfg` file make sure you have the following : (This makes sur
 
 In order to ban users family sharing the script will do it all automaticly so you don't have to worry about a thing all you have to do is use either the `!ban` or `!banid` command in chat or you can use the ULX menu `!menu` or `ulx ban` / `ulx banid` via the console. The script does all the rest.
 
+# Recommended Settings :
+
+I recommend default settings and the only settings I ever recommend every server owner change is the following that way your server is unique and uses its own paths to track banned players.
+
+https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/familysharing.lua#L62-L72
+
 # Dependencies / Requirements :
 
 ULX / ULIB :
