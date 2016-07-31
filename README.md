@@ -49,7 +49,9 @@ Install the addon to the `"/garrysmod/addons/"` folder.
 
 The path layout should look like this : `"/garrysmod/addons/familysharing/lua/autorun/familysharing.lua"`
 
-Configure the script and put your Steam Dev API Key : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/familysharing.lua#L17
+Configure the script and put your Steam Dev API Key : (Steam Dev API Key can be obtained from http://steamcommunity.com/dev/apikey )
+
+https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/familysharing.lua#L17
 
 ##### Optional :
 
