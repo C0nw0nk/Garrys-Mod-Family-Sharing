@@ -1,7 +1,7 @@
 if SERVER then --If SERVER statement to ensure the following code stays server side.
 --[[
 Credits :
-C0nw0nk
+C0nw0nk, Edit by Momox
 
 Github : https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing
 
@@ -12,52 +12,54 @@ Because of the way this script works you can guarantee when you ban someone they
 Depending on the settings you assign you may also ban users by IP too what will make it harder for the banned user to return.
 ]]
 
---APIKey required to deal with those family sharing.
---You may obtain your Steam API Key from here | http://steamcommunity.com/dev/apikey
-APIKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+GMFS = GMFS or {} --We're now storing things inside tables ;)
+
+--GMFS.APIKey required to deal with those family sharing.
+--You may obtain your Steam API Key from here | http://steamcommunity.com/dev/GMFS.APIKey
+GMFS.APIKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 --The message displayed to those who connect by a family shared account that has been banned.
-kickmessage = "The account that lent you Garry's Mod is banned on this server"
+GMFS.kickmessage = "The account that lent you Garry's Mod is banned on this server"
 
 --Ban those who try to bypass a current ban by returning on a family shared account.
 --Set true to enable | false to disable.
 --If this is set to false it will only kick those bypassing bans.
-banbypass = true
+GMFS.banbypass = true
 
 --The length to ban those who are trying to bypass a current / existing ban.
 --This will also increase/change the ban length on the account that owns Garry's Mod. (They shouldn't attempt to bypass a current ban.)
 --time is in minutes.
 --0 is permanent.
-banlength = 0
+GMFS.banlength = 0
 
 --The reason the player has been banned automaticly for connecting from a family shared account that already has a ban.
-banreason = "attempting to bypass a current/existing ban."
+GMFS.banreason = "attempting to bypass a current/existing ban."
 
 --Enable banning users by IP address too.
 --Makes it even harder for continuous offenders to return to the server.
 --Set true to enable | false to disable.
-banip = true
+GMFS.banip = true
 
 --Enable blocking anyone joining on a family shared account regardless if they are banned or not.
 --Enabling this will allow only accounts that have bought and own Garry's Mod to join.
 --Set true to enable | false to disable.
-blockfamilysharing = false
+GMFS.blockfamilysharing = false
 
---The message to display to those who have been blocked by "blockfamilysharing".
-blockfamilysharingmessage = "Please connect to the server by a account that own's Garry's Mod."
+--The message to display to those who have been blocked by "GMFS.blockfamilysharing".
+GMFS.blockfamilysharingmessage = "Please connect to the server by a account that own's Garry's Mod."
 
 --Extra Ban Checks will ban users IP addresses who connect to the server if their SteamID is in the ban list
 --and their IP is not already banned.
 --Set true to enable | false to disable.
-extra_ban_checks = true
+GMFS.extra_ban_checks = true
 
 --Makes the default ULX banned message more informative and pretty.
 --Set true to enable | false to disable.
-informative_ban_message = true
+GMFS.informative_ban_message = true
 
 --The custom banned message to display to those who are banned.
 --\n is for a new line.
-custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
+GMFS.custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 
 --Configuration for the ban tracker.
 --Set file name path and file type to track players who get banned.
@@ -65,11 +67,11 @@ custom_ban_message = "You're banned! \n\n Visit www.your-site.com to appeal it."
 --I recommend having this different to what is set in this script so your server is unique and uses its own path.
 --The folder we will create and put the file into to make it inconspicuous.
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
-storage_path = "models/" --Always keep a forward slash if you set a directory or folder.
+GMFS.storage_path = "models/" --Always keep a forward slash if you set a directory or folder.
 --The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
-file_type = ".jpg"
+GMFS.file_type = ".jpg"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
-file_name = "player"
+GMFS.file_name = "player"
 
 --End if server statement.
 end
@@ -110,8 +112,8 @@ local function HandleSharedPlayer(ply, lenderSteamID)
 	))
 
 	--Prevent anyone joining on a family shared account regardless if they are banned or not.
-	if blockfamilysharing == true then
-		ply:Kick(blockfamilysharingmessage)
+	if GMFS.blockfamilysharing == true then
+		ply:Kick(GMFS.blockfamilysharingmessage)
 	end
 	--End preventing anyone joining on a family shared account regardless if they are banned or not.
 
@@ -120,16 +122,16 @@ local function HandleSharedPlayer(ply, lenderSteamID)
 
 	--If the lenderSteamID is in the ULX ban list then kick/ban the SteamID they are sharing Garry's Mod with.
 	if ULib.bans[lenderSteamID] then
-		--If banbypass is enabled.
-		if banbypass == true then
+		--If GMFS.banbypass is enabled.
+		if GMFS.banbypass == true then
 			--Ban the shared account that has connected.
-			RunConsoleCommand("ulx", "banid", ply:SteamID(), banlength, banreason)
+			RunConsoleCommand("ulx", "banid", ply:SteamID(), GMFS.banlength, GMFS.banreason)
 			--Ban the lenderSteamID (The account that owns Garry's mod what is originally banned) or increase their ban.
-			RunConsoleCommand("ulx", "banid", lenderSteamID, banlength, banreason)
+			RunConsoleCommand("ulx", "banid", lenderSteamID, GMFS.banlength, GMFS.banreason)
 		--else ban bypass is disabled so kick the person bypassing a ban instead.
 		else
 			--Kick the player.
-			ply:Kick(kickmessage)
+			ply:Kick(GMFS.kickmessage)
 		end
 	end
 end
@@ -140,7 +142,7 @@ local function CheckFamilySharing(ply)
 	--Send request to the SteamDEV API with the SteamID64 of the player who has just connected.
 	http.Fetch(
 	string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
-		APIKey,
+		GMFS.APIKey,
 		ply:SteamID64()
 	),
 
@@ -182,8 +184,8 @@ local function banHook(ply, commandName, translated_args)
 		local time = translated_args[3]
 		local offence = translated_args[4]
 
-		--If banip is enabled.
-		if banip == true then
+		--If GMFS.banip is enabled.
+		if GMFS.banip == true then
 			--Ban the players IP who is trying to bypass a existing ban.
 			RunConsoleCommand("addip", time, target:IPAddress():Split(":")[1])
 			RunConsoleCommand("writeip")
@@ -192,7 +194,7 @@ local function banHook(ply, commandName, translated_args)
 		--Send request to the SteamDEV API with the SteamID64 of the player we are banning.
 		http.Fetch(
 		string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
-			APIKey,
+			GMFS.APIKey,
 			target:SteamID64()
 		),
 
@@ -229,8 +231,8 @@ local function banHook(ply, commandName, translated_args)
 		local time = translated_args[3]
 		local offence = translated_args[4]
 
-		--If banip is enabled.
-		if banip == true then
+		--If GMFS.banip is enabled.
+		if GMFS.banip == true then
 			--Lets check if the SteamID that is getting banned is currently playing on the server.
 			--If they are playing on the server lets ban their IP too.
 			--Get all players currently playing.
@@ -251,7 +253,7 @@ local function banHook(ply, commandName, translated_args)
 		--Send request to the SteamDEV API with the SteamID64 of the player we are banning.
 		http.Fetch(
 		string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
-			APIKey,
+			GMFS.APIKey,
 			util.SteamIDTo64(target)
 		),
 
@@ -283,8 +285,8 @@ end
 hook.Add("ULibPostTranslatedCommand", "BanHook", banHook)
 --End hooking ulx ban commands.
 
---If informative_ban_message is enabled or extra ban checks are enabled.
-if informative_ban_message == true or extra_ban_checks == true then
+--If GMFS.informative_ban_message is enabled or extra ban checks are enabled.
+if GMFS.informative_ban_message == true or GMFS.extra_ban_checks == true then
 --Start IP banned or Steam ID banned check. (Extra checks to prevent players bypassing bans.)
 hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 	--Check if their SteamID is in the ban list.
@@ -298,16 +300,16 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 		--If ban time remaining is less than or equal to 0 then.
 		if tonumber(ULib.bans[util.SteamIDFrom64(steamID64)].unban) <= 0 then
 			--Make the ban length 0 for permanent.
-			banip_length = 0
+			GMFS.banip_length = 0
 		else
 			--If the ban time remaining is not 0 then make it the time remaining on the users ban.
-			banip_length = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
+			GMFS.banip_length = math.Round((ULib.bans[util.SteamIDFrom64(steamID64)].unban - os.time())/60)
 		end
 
-		--If banip is enabled and extra ban checks are enabled.
-		if banip == true and extra_ban_checks == true then
+		--If GMFS.banip is enabled and extra ban checks are enabled.
+		if GMFS.banip == true and GMFS.extra_ban_checks == true then
 			--Ban their IP address if it is not already banned.
-			RunConsoleCommand("addip", banip_length, ipAddress:Split(":")[1])
+			RunConsoleCommand("addip", GMFS.banip_length, ipAddress:Split(":")[1])
 			RunConsoleCommand("writeip")
 		end
 
@@ -324,10 +326,10 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 			date_of_unban = "Never."
 			ban_time_left = "None, You are banned permanently."
 		end
-		--If informative_ban_message is enabled.
-		if informative_ban_message == true then
+		--If GMFS.informative_ban_message is enabled.
+		if GMFS.informative_ban_message == true then
 			--Show our nicely detailed you are banned informative message.
-			return false, ""..custom_ban_message.."\n\nDate of Ban : "..date_of_ban.."\n\nDate of Unban : "..date_of_unban.."\n\nTime left minute(s) : "..ban_time_left..""
+			return false, ""..GMFS.custom_ban_message.."\n\nDate of Ban : "..date_of_ban.."\n\nDate of Unban : "..date_of_unban.."\n\nTime left minute(s) : "..ban_time_left..""
 		else
 			--Show the default you are banned message.
 			return false, "You have been banned from this server."
@@ -335,7 +337,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 	end
 
 	--If extra ban checks are enabled.
-	if extra_ban_checks == true then
+	if GMFS.extra_ban_checks == true then
 		--Check if their IP address is in the ban list.
 		if file.Exists("cfg/banned_ip.cfg", "GAME") then
 			--Read the banned ip file.
@@ -353,7 +355,7 @@ hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 						util.SteamIDFrom64(steamID64)
 					))
 					--Ban the SteamID of the account connecting too. length of ban depends on what the IP ban length is set to. (data[i]:Split(" ")[2])
-					RunConsoleCommand("ulx", "banid", util.SteamIDFrom64(steamID64), data[i]:Split(" ")[2], banreason)
+					RunConsoleCommand("ulx", "banid", util.SteamIDFrom64(steamID64), data[i]:Split(" ")[2], GMFS.banreason)
 					--Show the default you are banned message.
 					return false, "You have been banned from this server."
 				end
@@ -390,9 +392,9 @@ if SERVER then
 				player:SteamID()
 			))
 			--Ban the player who just sent the message.
-			RunConsoleCommand("ulx", "banid", player:SteamID(), banlength, banreason)
+			RunConsoleCommand("ulx", "banid", player:SteamID(), GMFS.banlength, GMFS.banreason)
 			--Increase the ban on their original steam account.
-			RunConsoleCommand("ulx", "banid", util.SteamIDFrom64(clientsteamidfromfile), banlength, banreason)
+			RunConsoleCommand("ulx", "banid", util.SteamIDFrom64(clientsteamidfromfile), GMFS.banlength, GMFS.banreason)
 		end
 	end)
 
@@ -402,12 +404,12 @@ if SERVER then
 		net.Start(NetworkServerToClient)
 		--Send SteamID.
 		net.WriteString(player:SteamID64())
-		--Send file_name.
-		net.WriteString(file_name)
-		--Send file_type.
-		net.WriteString(file_type)
-		--Send storage_path.
-		net.WriteString(storage_path)
+		--Send GMFS.file_name.
+		net.WriteString(GMFS.file_name)
+		--Send GMFS.file_type.
+		net.WriteString(GMFS.file_type)
+		--Send GMFS.storage_path.
+		net.WriteString(GMFS.storage_path)
 		--Send to player that we just authenticated.
 		net.Send(player)
 	end)
