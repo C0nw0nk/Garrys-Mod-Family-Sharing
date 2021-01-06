@@ -66,7 +66,7 @@ SteamFamilySharing.custom_ban_message = "You're banned! \n\n Visit www.your-site
 --The folder we will create and put the file into to make it inconspicuous.
 --If this is empty = "" then no file path will be set and it will just create in a root folder.
 SteamFamilySharing.storage_path = "models/" --Always keep a forward slash if you set a directory or folder.
---The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.garrysmod.com/page/file/Write
+--The file types you can choose are ".txt", ".jpg", ".png", ".dat" or ".vtf" according to what the GMOD Wiki tells us : https://wiki.facepunch.com/gmod/file.Write
 SteamFamilySharing.file_type = ".jpg"
 --File name can be what ever you want it to be for example "DarkRP" or "License" something inconspicuous.
 SteamFamilySharing.file_name = "player"
