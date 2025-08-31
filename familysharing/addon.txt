@@ -1,0 +1,10 @@
+"AddonInfo"
+{
+	"name"			"Ban bypass detection Family Sharing protection"
+	"version"		"1.0"
+	"up_date"		""
+	"author_name"	"C0nw0nk"
+	"author_email"	""
+	"author_url"	"https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing"
+	"info"			"https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing"
+}
