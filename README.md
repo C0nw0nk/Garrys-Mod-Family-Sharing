@@ -49,10 +49,6 @@ Install the addon to the `"\garrysmod\addons\"` folder.
 
 The path layout should look like this : `"\garrysmod\addons\familysharing\lua\autorun\server\sv_familysharing.lua"`
 
-Configure the script and put your Steam Dev API Key : (Steam Dev API Key can be obtained from http://steamcommunity.com/dev/apikey )
-
-https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/familysharing/lua/autorun/server/sv_familysharing.lua
-
 ##### Optional :
 
 Inside your `server.cfg` file make sure you have the following : (This makes sure if you enable the IP banning feature it will actualy use the ip ban list.)
