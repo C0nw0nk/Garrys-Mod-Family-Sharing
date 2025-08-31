@@ -12,10 +12,6 @@ Depending on the settings you assign you may also ban users by IP too what will 
 ]]
 
 local SteamFamilySharing = {}
---SteamFamilySharing.APIKey required to deal with those family sharing.
---You may obtain your Steam API Key from here | http://steamcommunity.com/dev/apikey
-SteamFamilySharing.APIKey = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-
 --The message displayed to those who connect by a family shared account that has been banned.
 SteamFamilySharing.kickmessage = "The account that lent you Garry's Mod is banned on this server"
 
@@ -131,10 +127,14 @@ end
 --If they are family sharing they will be passed to the "HandleSharedPlayer" function to decide their fate.
 local function CheckFamilySharing(ply)
 	--Send request to the SteamDEV API with the SteamID64 of the player who has just connected.
+	--print(ply:SteamID64() .. " and " .. ply:OwnerSteamID64())
+	
+	--[[
 	http.Fetch(
 	string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
 		SteamFamilySharing.APIKey,
-		ply:SteamID64()
+		ply:OwnerSteamID64()
+		--ply:SteamID64()
 	),
 
 	function(body)
@@ -159,6 +159,10 @@ local function CheckFamilySharing(ply)
 		error(string.format("FamilySharing: Failed API call for %s | %s (Error: %s)\n", ply:Nick(), ply:SteamID(), code))
 	end
 	)
+	]]
+	if ply:SteamID64() != ply:OwnerSteamID64() then
+		HandleSharedPlayer(ply, util.SteamIDFrom64(ply:OwnerSteamID64()))
+	end
 end
 hook.Add("PlayerAuthed", "CheckFamilySharing", CheckFamilySharing)
 
@@ -182,6 +186,7 @@ local function banHook(ply, commandName, translated_args)
 			RunConsoleCommand("writeip")
 		end
 
+		--[[
 		--Send request to the SteamDEV API with the SteamID64 of the player we are banning.
 		http.Fetch(
 		string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
@@ -212,6 +217,12 @@ local function banHook(ply, commandName, translated_args)
 			error(string.format("FamilySharing: Failed API call for %s | %s (Error: %s)\n", target:Nick(), target:SteamID(), code))
 		end
 		)
+		]]
+		if target:SteamID64() != target:OwnerSteamID64() then
+			--Lets ban the owners account too.
+			local lenderSteamID = util.SteamIDFrom64(target:OwnerSteamID64())
+			RunConsoleCommand("ulx", "banid", lenderSteamID, time, offence)
+		end
 	end
 
 	--If the admin is banning a player. "!banid" in chat or "ulx banid" via console. (Works for !menu bans too.)
@@ -241,6 +252,7 @@ local function banHook(ply, commandName, translated_args)
 			end
 		end
 
+		--[[
 		--Send request to the SteamDEV API with the SteamID64 of the player we are banning.
 		http.Fetch(
 		string.format("http://api.steampowered.com/IPlayerService/IsPlayingSharedGame/v0001/?key=%s&format=json&steamid=%s&appid_playing=4000",
@@ -270,6 +282,13 @@ local function banHook(ply, commandName, translated_args)
 		function(code)
 			error(string.format("FamilySharing: Failed API call for %s | %s (Error: %s)\n", util.SteamIDTo64(target), target, code))
 		end)
+		]]
+		
+		if target:SteamID64() != target:OwnerSteamID64() then
+			--Lets ban the owners account too.
+			local lenderSteamID = util.SteamIDFrom64(target:OwnerSteamID64())
+			RunConsoleCommand("ulx", "banid", lenderSteamID, time, offence)
+		end
 	end
 end
 hook.Add("ULibPostTranslatedCommand", "BanHook", banHook)
@@ -280,7 +299,7 @@ if SteamFamilySharing.informative_ban_message or SteamFamilySharing.extra_ban_ch
     --Start IP banned or Steam ID banned check. (Extra checks to prevent players bypassing bans.)
     hook.Add("CheckPassword", "Extra-BanChecks", function(steamID64, ipAddress)
 	    --Check if their SteamID is in the ban list.
-	    if ULib.bans[util.SteamIDFrom64(steamID64)] then
+	    if ULib ~= nil and ULib.bans[util.SteamIDFrom64(steamID64)] then
 		    --Log to server console who has been detected attempting to bypass a existing ban.
 		    print(string.format("The following players SteamID: %s | matched with a SteamID in the ban list we are now going to ban their new IP too (Stop trying to bypass bans): %s",
 			    util.SteamIDFrom64(steamID64),
@@ -372,7 +391,7 @@ if ban_tracker then
 		--Convert the string to a SteamID util.SteamIDFrom64(net.ReadString())
 		local clientsteamidfromfile = net.ReadString()
 		--Ignore admins and check if the steamid is in the banlist.
-		if !player:IsAdmin() and ULib.bans[util.SteamIDFrom64(clientsteamidfromfile)] then
+		if !player:IsAdmin() and ULib ~= nil and ULib.bans[util.SteamIDFrom64(clientsteamidfromfile)] then
 			--Log to server console who has been detected attempting to bypass a existing ban.
 			print(string.format("The following SteamID: %s | matched with a SteamID in the ban list we are now going to ban their new account too (Stop trying to bypass bans): %s",
 				util.SteamIDFrom64(clientsteamidfromfile),
