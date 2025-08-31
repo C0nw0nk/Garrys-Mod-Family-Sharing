@@ -38,20 +38,20 @@ Ban tracker paths settings and options all configurable.
 
 # How to install
 
-Install the script to the `"/garrysmod/lua/autorun/"` folder.
+Install the script to the `"\garrysmod\addons\familysharing"` folder.
 
-The path to should look like this : `"/garrysmod/lua/autorun/familysharing.lua"`
+The path to should look like this : `"\garrysmod\addons\familysharing\lua\autorun\server\sv_familysharing.lua"`
 
 ###### Alternative Install Location :
 If you don't want to use the directory above you can install this script as an addon in the following location.
 
-Install the addon to the `"/garrysmod/addons/"` folder.
+Install the addon to the `"\garrysmod\addons\"` folder.
 
-The path layout should look like this : `"/garrysmod/addons/familysharing/lua/autorun/familysharing.lua"`
+The path layout should look like this : `"\garrysmod\addons\familysharing\lua\autorun\server\sv_familysharing.lua"`
 
 Configure the script and put your Steam Dev API Key : (Steam Dev API Key can be obtained from http://steamcommunity.com/dev/apikey )
 
-https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/familysharing.lua#L17
+https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/familysharing/lua/autorun/server/sv_familysharing.lua
 
 ##### Optional :
 
@@ -69,7 +69,7 @@ In order to ban users family sharing the script will do it all automaticly so yo
 
 I recommend default settings and the only settings I ever recommend every server owner change is the following that way your server is unique and uses its own paths to track banned players.
 
-https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/garrysmod/lua/autorun/familysharing.lua#L62-L72
+https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/familysharing/lua/autorun/server/sv_familysharing.lua
 
 # Dependencies / Requirements :
 
