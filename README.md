@@ -42,13 +42,6 @@ Install the script to the `"\garrysmod\addons\familysharing"` folder.
 
 The path to should look like this : `"\garrysmod\addons\familysharing\lua\autorun\server\sv_familysharing.lua"`
 
-###### Alternative Install Location :
-If you don't want to use the directory above you can install this script as an addon in the following location.
-
-Install the addon to the `"\garrysmod\addons\"` folder.
-
-The path layout should look like this : `"\garrysmod\addons\familysharing\lua\autorun\server\sv_familysharing.lua"`
-
 ##### Optional :
 
 Inside your `server.cfg` file make sure you have the following : (This makes sure if you enable the IP banning feature it will actualy use the ip ban list.)
@@ -72,10 +65,6 @@ https://github.com/C0nw0nk/Garrys-Mod-Family-Sharing/blob/master/familysharing/l
 ULX / ULIB :
 
 http://ulyssesmod.net/downloads.php
-
-Steam Dev API Key can be obtained from :
-
-http://steamcommunity.com/dev/apikey
 
 # F.A.Q (Frequently asked Questions) :
 
